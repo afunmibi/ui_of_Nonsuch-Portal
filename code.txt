@@ -1,0 +1,67 @@
+// File Validation (Crucial!)
+    $allowed_types = ['jpg', 'jpeg', 'png', 'gif']; // Add more if needed
+    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+    if (!in_array($file_ext, $allowed_types)) {
+        die("Invalid file type. Allowed types: " . implode(", ", $allowed_types));
+    }
+
+    // Check file size (Important!)
+    $max_file_size = 5 * 1024 * 1024; // 5MB (adjust as needed)
+    if ($_FILES['photo']['size'] > $max_file_size) {
+        die("File size too large. Maximum size: " . ($max_file_size / (1024 * 1024)) . "MB");
+    }
+
+
+    if (!move_uploaded_file($file_tmp, $file_store)) {
+        die("Error uploading file."); // More specific error message
+    } else {
+        // Prepared Statement (Essential for security!)
+        $stmt = $con->prepare("INSERT INTO users (image) VALUES (?)");
+        if (!$stmt) {
+            die("Error preparing statement: " . $con->error);
+        }
+        $stmt->bind_param("s", $file_name); // "s" for string
+
+        if ($stmt->execute()) {
+            echo "Data saved successfully."; // Added "successfully"
+        } else {
+            echo "Error saving data: " . $stmt->error; // More specific error
+        }
+
+        $stmt->close(); // Close the statement
+    }
+
+    mysqli_close($con); // Close the database connection (good practice)
+
+
+
+
+
+    if ($_SERVER['REQUEST_METHOD']==='POST') {
+ 
+
+if (isset($_POST['submit'])) {
+         $organization = $_POST['organization'];
+        $name = $_POST['name'];
+        $policy_no = $_POST['policy_no'];
+        $alternate_policy_no = $_POST['alternate_policy_no'];
+        $phone_no = $_POST['phone_no'];
+        $plan = $_POST['plan'];
+        $email = $_POST['email'];
+        $location = $_POST['location'];
+        $no_of_dependant = $_POST['no_of_dependant'];
+        $provider = $_POST['provider'];
+        $gender = $_POST['gender'];
+        $dob = $_POST['dob'];
+        $reg_status = $_POST['reg_status'];
+
+// image upload section
+    $file_name = $_FILES['photo']['name'];
+    $file_tmp = $_FILES['photo']['tmp_name'];
+    $file_store = 'uploads/' . basename($file_name);
+
+    
+}}
+
+ALTER TABLE `login` ADD `provider` VARCHAR(50) NOT NULL AFTER `email`, ADD `gender` VARCHAR(50) NOT NULL AFTER `provider`, ADD `plan_type` VARCHAR(30) NOT NULL AFTER `gender`, ADD `location` VARCHAR(50) NOT NULL AFTER `plan_type`, ADD `dob` VARCHAR(30) NOT NULL AFTER `location`, ADD `no_of_dependant` VARCHAR(30) NOT NULL AFTER `dob`, ADD `reg_status` VARCHAR(30) NOT NULL AFTER `no_of_dependant`, ADD `alternate_no` VARCHAR(30) NOT NULL AFTER `reg_status`, ADD `photo` VARCHAR(255) NOT NULL AFTER `alternate_no`;
