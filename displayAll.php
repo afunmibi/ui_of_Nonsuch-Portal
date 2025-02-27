@@ -15,40 +15,37 @@ require("connection.php")?>
 	<table class="table table-responsive  ">
 		<tr>
 			<th>Id</th>
-			<th>Name</th>
+			<th>SurName</th>
+			<th>Other Names</th>
 			<th>Policy No.</th>
 			<th>Phone</th>
 			<th>Photo</th>
 			<th>Status</th>
 			<th>Action</th>
 		</tr>
-		
+	<tr>	
 			<?php 
 $sql = "select * from `login` ";
 $result = mysqli_query($con, $sql);
+while ($row=mysqli_fetch_assoc($result)) {
+	?>
+<tr>
+			<td><?php echo $row['id'];?></td>
+			<td><?php echo $row['sname'];?></td>
+			<td><?php echo $row['oname'];?></td>
+			<td><?php echo $row['policy_no'];?></td>
+			<td><?php echo $row['phone_no'];?></td>
+			<td><img src="uploads/"><?php echo $row['photo'];?></td>
+			<td><?php echo $row['reg_status'];?></td>
+			
+		</tr>
+	<?php
 
-if (mysqli_num_rows($result)>0) {
-	while ($row = mysqli_fetch_assoc($result)) {
-		echo "<tr>";
 
-			echo '<td>'.$row['id'].'</td>';
-			echo '<td>'.$row['sname'].'</td>';
-			echo '<td>'.$row['policy_no'].'</td>';
-			echo '<td>'.$row['phone_no'].'</td>';
-			echo '<td>'.$row['photo'].  '</td>';
-			echo '<td>'.$row['reg_status'].'</td>';
-			echo '<td>
-			<button class="btn btn-primary btn-sm">View</button>
-			<button class="btn btn-success btn-sm">Edit</button>
-			<button class="btn btn-danger btn-sm">Delete</button>
-		</td>';
-		echo "</tr>";
-		;
-	}
-	;
 }
+
 		?>
-	</table>
+	
 </div>
 </body>
 </html>
